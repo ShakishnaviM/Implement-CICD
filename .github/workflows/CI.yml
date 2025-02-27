@@ -4,11 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
@@ -22,13 +18,23 @@ jobs:
         check-latest: true
 
     - name: Verify Java installation
-      run: java -version  #  Check if Java is installed correctly
+      run: java -version  # ✅ Check if Java is installed correctly
 
     - name: Clean Gradle cache
       run: rm -rf ~/.gradle/caches/
 
     - name: Grant execute permissions to Gradle wrapper
-      run: chmod +x gradlew  
+      run: chmod +x gradlew  # ✅ Fix permission issue
 
     - name: Build with Gradle
       run: ./gradlew build --no-daemon
+
+
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/docker-build-push@v4
+      with:
+        image: shakishnavi/implement_cicd
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
