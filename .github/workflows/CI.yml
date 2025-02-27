@@ -29,18 +29,10 @@ jobs:
     - name: Verify that JAR file exists
       run: ls -l build/libs/  # ✅ Debug: List files in the build directory
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Log in to DockerHub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Build and push Docker image
-      uses: mr-smithers-excellent/docker-build-push@v6  # ✅ Use latest version
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/docker-build-push@v4
       with:
         image: shakishnavi/implement_cicd
-        tags: main-${{ github.run_number }}
         registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
