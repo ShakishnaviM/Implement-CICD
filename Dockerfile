@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:11-jre-alpine
 
 # Set the working directory inside the container
 WORKDIR /usr/app
