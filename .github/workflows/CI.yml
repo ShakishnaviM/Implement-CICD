@@ -4,7 +4,11 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
 
     steps:
     - name: Checkout repository
@@ -18,13 +22,13 @@ jobs:
         check-latest: true
 
     - name: Verify Java installation
-      run: java -version  # ✅ Check if Java is installed correctly
+      run: java -version  #  Check if Java is installed correctly
 
     - name: Clean Gradle cache
       run: rm -rf ~/.gradle/caches/
 
     - name: Grant execute permissions to Gradle wrapper
-      run: chmod +x gradlew  # ✅ Fix permission issue
+      run: chmod +x gradlew  
 
     - name: Build with Gradle
       run: ./gradlew build --no-daemon
